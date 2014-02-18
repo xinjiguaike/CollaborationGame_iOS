@@ -1,0 +1,39 @@
+WTwitterActivity *twitterActivity = [[OWTwitterActivityalloc] init];
+OWMailActivity *mailActivity = [[OWMailActivityalloc] init];
+OWPrintActivity *printActivity = [[OWPrintActivityalloc] init];
+OWCopyActivity *copyActivity = [[OWCopyActivityalloc] init];
+
+NSMutableArray *activities = [NSMutableArrayarrayWithObject:mailActivity];
+
+if( [OWWeChatActivityisWeChatInstalled] )
+{
+OWWeChatActivity *wechatSessionActivity = [[OWWeChatActivityalloc] initWithAppId:WECHAT_APP_IDmessageType:WXMessageTypeTextscene:WXSceneSession];
+OWWeChatActivity *wechatTimeLineActivity = [[OWWeChatActivityalloc] initWithAppId:WECHAT_APP_IDmessageType:WXMessageTypeTextscene:WXSceneTimeline];
+[activities addObjectsFromArray:@[wechatSessionActivity,wechatTimeLineActivity]];
+}
+if ([MFMessageComposeViewControllercanSendText]) {
+OWMessageActivity *messageActivity = [[OWMessageActivityalloc] init];
+[activities addObject:messageActivity];
+}
+
+[activities addObjectsFromArray:@[twitterActivity]];
+
+if( NSClassFromString (@"UIActivityViewController") ) {
+// ios 6, add facebook and sina weibo activities
+OWFacebookActivity *facebookActivity = [[OWFacebookActivityalloc] init];
+OWSinaWeiboActivity *sinaWeiboActivity = [[OWSinaWeiboActivityalloc] init];
+[activities addObjectsFromArray:@[
+  facebookActivity, sinaWeiboActivity
+  ]];
+}
+
+[activities addObjectsFromArray:@[
+  copyActivity, printActivity]];
+
+OWActivityViewController *activityViewController = [[OWActivityViewControlleralloc] initWithViewController:selfactivities:activities];
+activityViewController.userInfo = @{@"text": mstr};
+
+[activityViewController presentFromRootViewController];
+囧
+复制下来拿到企鹅看吧
+用起来就这样用
